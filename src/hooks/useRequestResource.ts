@@ -7,27 +7,24 @@ const client = axios.create({
 })
 
 export default function useRequestResource(){
-    const { priceHistory, getHistoryPrices } = useData();
-    const [closePriceHistory, setclosePriceHistory] = useState({ results: [] })
-    const [time, setTime] = useState<number[]>([])
-    const [loading, setLoading] = useState(false)
+    const { getHistoryPrices, getTimeSeries } = useData();
+    // const [loading, setLoading] = useState(false)
 
 
     const getResourceData = useCallback(
      ()=>{
-        setLoading(true);
+       
         client.get(``)
         .then((res)=>{
-            console.log('heey whats up')
             getHistoryPrices(res.data.data.prices)
+            getTimeSeries(res.data.data.time)
         })
         .catch((err)=>console.log(err))
-     },[client,setclosePriceHistory,setLoading]
+     },[client]
     );
-    console.log(closePriceHistory,'heeyyy')
+
     return{
         getResourceData,
-        closePriceHistory
 
     }
 

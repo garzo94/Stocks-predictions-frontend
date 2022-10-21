@@ -7,14 +7,22 @@ export function Provider({ children }: any) {
   const [state, dispatch] = useReducer(dataReducer, initialState);
   const getHistoryPrices = (value: number[]) => {
     dispatch({
-      type: PriceActionKind.GETPRICES,
+      type: PriceActionKind.GET_PRICES,
+      payload: value,
+    });
+  };
+  const getTimeSeries = (value: string[]) => {
+    dispatch({
+      type: PriceActionKind.GET_TIME,
       payload: value,
     });
   };
 
   const value = {
     priceHistory: state.priceHistory,
+    timeSeries: state.timeSeries,
     getHistoryPrices,
+    getTimeSeries,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;
