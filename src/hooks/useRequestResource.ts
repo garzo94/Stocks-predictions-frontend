@@ -12,9 +12,9 @@ export default function useRequestResource(){
 
 
     const getResourceData = useCallback(
-     ()=>{
-       
-        client.get(``)
+     ({query}:{query:string})=>{
+
+        client.get(`${query}`)
         .then((res)=>{
             getHistoryPrices(res.data.data.prices)
             getTimeSeries(res.data.data.time)

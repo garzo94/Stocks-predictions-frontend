@@ -31,6 +31,7 @@ export default function QuoteLIneChart() {
   // getting cricules data (max value by year)
   const [circules, setCircules] = useState<any[]>([]);
   function getCircules() {
+    console.log(parseData, "parseee");
     if (parseData) {
       var groupsYear: any = [];
       parseData.forEach((val) => {
@@ -41,6 +42,8 @@ export default function QuoteLIneChart() {
           groupsYear[date] = new Array(val);
         }
       });
+
+      console.log(groupsYear, "groupsYear");
 
       let dataCircules = groupsYear.map((val: any) => {
         return val.reduce(function (prev: any, current: any) {
@@ -64,7 +67,7 @@ export default function QuoteLIneChart() {
 
   useEffect(() => {
     getCircules();
-  }, []);
+  }, [priceHistory]);
 
   let [ref, bounds] = useMeasure();
 

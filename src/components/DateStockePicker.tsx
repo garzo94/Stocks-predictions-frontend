@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useRequestResource from "../hooks/useRequestResource";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -21,24 +21,30 @@ export default function DateStockePicker() {
   const { getResourceData } = useRequestResource();
   //Date picker ///////////////
   // start date
-  const [startDate, setstartDate] = useState<string | Date>(new Date());
+  const [startDate, setstartDate] = useState<string | Date>("");
   const handleChangeStart = (start: any) => {
     setstartDate(format(new Date(start), "yyyy-MM-dd"));
   };
   /////////////////////////
 
   // end date ////////////////
-  const [endDate, setEndDate] = useState<string | Date>(new Date());
+  const [endDate, setEndDate] = useState<string | Date>("");
   const handleChangeEnd = (end: any) => {
     setEndDate(format(new Date(end), "yyyy-MM-dd"));
   }; //////////////
 
   // stock //////////
-  const [stock, setStock] = useState("STOCK");
+  const [stock, setStock] = useState("");
   const handleChangeStock = (event: SelectChangeEvent) => {
     setStock(event.target.value as string);
-    getResourceData();
   };
+
+  useEffect(() => {
+    getResourceData({
+      query: `?start=${startDate}&end=${endDate}&stock=${stock}`,
+    });
+  }, [stock]);
+
   // Menu items
   const stockMenu = ["NFLX", "NVDA", "DIS", "FB", "AAPL", "BYND", "MSFT"];
   /////////////////////////
@@ -73,7 +79,11 @@ export default function DateStockePicker() {
               onChange={handleChangeStock}
             >
               {stockMenu.map((stock) => {
-                return <MenuItem value={stock}>{stock}</MenuItem>;
+                return (
+                  <MenuItem key={stock} value={stock}>
+                    {stock}
+                  </MenuItem>
+                );
               })}
             </Select>
           </FormControl>
