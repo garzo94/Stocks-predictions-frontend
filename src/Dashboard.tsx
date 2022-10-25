@@ -4,8 +4,9 @@ import QuoteLIneChart from "./components/QuoteLIneChart";
 import useData from "./globalVariables/dataContext";
 import { Box } from "@mui/material";
 import DateStockePicker from "./components/DateStockePicker";
+import ModelPerformance from "./components/ModelPerformance";
 export default function Dashboard() {
-  const { priceHistory } = useData();
+  const { priceHistory, parseData } = useData();
   const { getResourceData } = useRequestResource();
 
   // useEffect(() => {
@@ -29,6 +30,8 @@ export default function Dashboard() {
       ) : (
         "Stock symbol has not been selected"
       )}
+
+      {parseData.length !== 0 ? <ModelPerformance /> : null}
     </Box>
   );
 }

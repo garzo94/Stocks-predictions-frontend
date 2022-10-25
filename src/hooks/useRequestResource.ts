@@ -7,7 +7,9 @@ const client = axios.create({
 })
 
 export default function useRequestResource(){
-    const { getHistoryPrices, getTimeSeries } = useData();
+    const { getHistoryPrices, getTimeSeries, getTrainTime,
+        getTrainPrices, getPriceClose, getPredictionClose,
+        getTimePrediction, getRmse} = useData();
     // const [loading, setLoading] = useState(false)
 
 
@@ -16,8 +18,24 @@ export default function useRequestResource(){
 
         client.get(`${query}`)
         .then((res)=>{
+            // Hisotry Prices
             getHistoryPrices(res.data.data.prices)
             getTimeSeries(res.data.data.time)
+            // Train Data
+            getTrainTime(res.data.data.train.timeTrain)
+            getTrainPrices(res.data.data.train.Close)
+
+            // Table Data
+            getPriceClose(res.data.data.valid.Close)
+            getPredictionClose(res.data.data.valid.Predictions)
+            getTimePrediction(res.data.data.valid.timeValid)
+
+            // Rmse
+            getRmse(res.data.data.rmse)
+
+
+
+
         })
         .catch((err)=>console.log(err))
      },[client]

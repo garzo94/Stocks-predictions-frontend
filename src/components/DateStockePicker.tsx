@@ -40,9 +40,11 @@ export default function DateStockePicker() {
   };
 
   useEffect(() => {
-    getResourceData({
-      query: `?start=${startDate}&end=${endDate}&stock=${stock}`,
-    });
+    if (stock !== "") {
+      getResourceData({
+        query: `?start=${startDate}&end=${endDate}&stock=${stock}`,
+      });
+    }
   }, [stock]);
 
   // Menu items
@@ -50,7 +52,14 @@ export default function DateStockePicker() {
   /////////////////////////
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Typography variant="h4" sx={{ pb: 5 }}>
+      <Typography
+        variant="h3"
+        sx={{
+          pb: 5,
+          fontFamily: "Roboto Flex",
+          color: "rgba(255,255,255,0.8)",
+        }}
+      >
         Close Price History
       </Typography>
       <Stack spacing={3} direction="row" sx={{ pb: 2 }}>
@@ -70,9 +79,14 @@ export default function DateStockePicker() {
         />
         <Box sx={{ minWidth: 120 }}>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Stock</InputLabel>
+            <InputLabel
+              id="stock-label"
+              sx={{ color: "rgba(255,255,255,0.7)" }}
+            >
+              Stock
+            </InputLabel>
             <Select
-              labelId="demo-simple-select-label"
+              sx={{ color: "rgba(255,255,255,0.7)" }}
               id="demo-simple-select"
               value={stock}
               label="Stock"

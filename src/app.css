@@ -1,1 +1,27 @@
-body{margin:0;padding:0}
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,500&family=Russo+One&display=swap');
+body{
+    margin:0;
+    padding:0;
+     background:#0d0d0f;
+     font-family: 'Roboto Flex', sans-serif;
+    }
+
+ .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline{
+   border-color: rgba(255,255,255,0.7) !important
+}
+
+.css-16p9rl4-MuiFormLabel-root-MuiInputLabel-root.Mui-focused, .css-1sumxir-MuiFormLabel-root-MuiInputLabel-root, .css-1d3z3hw-MuiOutlinedInput-notchedOutline, .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root, .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root.Mui-error, .css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-error{
+    color:  rgba(255,255,255,0.7) !important
+
+}
+
+.css-bpeome-MuiSvgIcon-root-MuiSelect-icon, .css-i4bv87-MuiSvgIcon-root, .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon{fill:rgba(255,255,255,0.7) !important ;}
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline{
+    border: 1px solid rgba(255,255,255,0.7) !important
+}
+
+.shadow {
+    -webkit-filter: drop-shadow( 0px 0px 10px rgba(255, 255, 255, 1));
+    filter: drop-shadow( 0px 0px 10px rgba(255, 255, 255, 1));
+  }
+

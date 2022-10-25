@@ -1,37 +1,23 @@
 import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
 import useMeasure from "react-use-measure";
-import useRequestResource from "../hooks/useRequestResource";
 import useData from "../globalVariables/dataContext";
-import {
-  Box,
-  Typography,
-  TextField,
-  Stack,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
-
+import { Box, Tooltip } from "@mui/material";
 import { motion } from "framer-motion";
-import dayjs, { Dayjs } from "dayjs";
+
 import {
   format,
   startOfMonth,
   endOfMonth,
   endOfYear,
-  eachMonthOfInterval,
   eachYearOfInterval,
   getYear,
 } from "date-fns";
-
+import ModelPerformance from "./ModelPerformance";
 export default function QuoteLIneChart() {
   // getting cricules data (max value by year)
   const [circules, setCircules] = useState<any[]>([]);
   function getCircules() {
-    console.log(parseData, "parseee");
     if (parseData) {
       var groupsYear: any = [];
       parseData.forEach((val) => {
@@ -43,8 +29,6 @@ export default function QuoteLIneChart() {
         }
       });
 
-      console.log(groupsYear, "groupsYear");
-
       let dataCircules = groupsYear.map((val: any) => {
         return val.reduce(function (prev: any, current: any) {
           return prev.y > current.y ? prev : current;
@@ -55,8 +39,8 @@ export default function QuoteLIneChart() {
     }
   }
 
-  // ########
-  const { priceHistory, timeSeries } = useData();
+  // ######## Close Price Historry
+  const { priceHistory, timeSeries, getParseData } = useData();
 
   let parseData: parseDataType[] = [];
 
@@ -64,6 +48,10 @@ export default function QuoteLIneChart() {
     let date = new Date(timeSeries[ind]);
     parseData.push({ date, value });
   });
+  console.log(priceHistory, "history");
+  useEffect(() => {
+    getParseData(parseData);
+  }, []);
 
   useEffect(() => {
     getCircules();
@@ -85,7 +73,6 @@ export default function QuoteLIneChart() {
 
   let xScale = d3
     .scaleTime()
-
     .domain([startDay, endDay])
     .range([margin.left, width - margin.right]);
 
@@ -105,11 +92,36 @@ export default function QuoteLIneChart() {
 
   let d = line(parseData as unknown as [number, number][]);
 
+  // pulsating circule
+  useEffect(() => {
+    drawPulsatingCircle();
+  });
+
+  const drawPulsatingCircle = () => {
+    (function repeat() {
+      d3.selectAll(".circle")
+        .transition()
+        .duration(300)
+        .attr("stroke-width", 0)
+        .attr("stroke-opacity", 0)
+        .transition()
+        .duration(300)
+        .attr("stroke-width", 0)
+        .attr("stroke-opacity", 0.5)
+        .transition()
+        .duration(1000)
+        .attr("stroke-width", 25)
+        .attr("stroke-opacity", 0)
+        .ease(d3.easeSin)
+        .on("end", repeat);
+    })();
+  };
+
   return (
     <Box
       sx={{
-        width: "90%",
-        height: "800px",
+        width: "85%",
+        height: "400px",
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "center",
@@ -121,10 +133,10 @@ export default function QuoteLIneChart() {
         <svg
           ref={ref}
           style={{
-            backgroundColor: "gray",
+            backgroundColor: "#1A172C",
             padding: 5,
-            width: "70%",
-            height: "50%",
+            width: "100%",
+            height: "100%",
             borderRadius: "10px",
           }}
           viewBox={`0 0 ${bounds.width} ${bounds.height}`}
@@ -140,10 +152,14 @@ export default function QuoteLIneChart() {
                   x2={width - margin.right}
                   y1={yScale(max)}
                   y2={yScale(max)}
-                  stroke="rgba(0,0,0,0.9)"
-                  strokeDasharray="1.5"
+                  stroke="rgba(255,255,255,0.2)"
+                  strokeDasharray="1"
                 />
-                <text alignmentBaseline="middle" y={yScale(max)}>
+                <text
+                  fill="rgba(255,255,255,0.5)"
+                  alignmentBaseline="middle"
+                  y={yScale(max)}
+                >
                   {max}
                 </text>
               </g>
@@ -157,7 +173,7 @@ export default function QuoteLIneChart() {
                 <rect
                   width={xScale(endOfYear(date)) - xScale(date)}
                   height={height - margin.bottom}
-                  fill="rgba(0,0,0,0.1)"
+                  fill="rgba(0,0,0,0.2)"
                 />
               )}
 
@@ -166,6 +182,7 @@ export default function QuoteLIneChart() {
                 x={(xScale(endOfYear(date)) - xScale(date)) / 2}
                 y={height - 5}
                 textAnchor="middle"
+                fill="rgba(255,255,255,0.5)"
               >
                 {format(date, "MMM y")}
               </text>
@@ -173,23 +190,28 @@ export default function QuoteLIneChart() {
           ))}
 
           <motion.path
+            className="shadow"
             initial={{ pathLength: 0 }}
             animate={{ pathLength: 1 }}
             transition={{ duration: 8, type: "spring" }}
             d={d!}
             fill="none"
-            stroke="white"
+            stroke="#03FFF9"
           />
 
           {circules.map((d) => {
             return (
-              <circle
-                key={d.date.toString()}
-                fill="black"
-                r="8"
-                cx={xScale(d.date)}
-                cy={yScale(d.value)}
-              />
+              <Tooltip title={`Close Price: ${d.value.toFixed(2)}`}>
+                <circle
+                  className="circle"
+                  key={d.date.toString()}
+                  stroke="#E4FCFF"
+                  fill="#E4FCFF"
+                  r="8"
+                  cx={xScale(d.date)}
+                  cy={yScale(d.value)}
+                />
+              </Tooltip>
             );
           })}
         </svg>
