@@ -73,6 +73,20 @@ export function Provider({ children }: any) {
     });
   };
 
+  const Loading = (): void => {
+    dispatch({
+      type: PriceActionKind.LOADING,
+      payload: [],
+    });
+  };
+
+  const getPredPrice = (value: number[]): void => {
+    dispatch({
+      type: PriceActionKind.GET_PRED_PRICE,
+      payload: value,
+    });
+  };
+
   const value = {
     //Price Hisory
     priceHistory: state.priceHistory,
@@ -101,6 +115,14 @@ export function Provider({ children }: any) {
     // RMSE
     rmse: state.rmse,
     getRmse,
+
+    // loading
+    loading: state.loading,
+    Loading,
+
+    // pred price
+    price: state.price,
+    getPredPrice,
   };
 
   return <Context.Provider value={value}>{children}</Context.Provider>;

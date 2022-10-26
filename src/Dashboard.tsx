@@ -2,17 +2,13 @@ import React, { useEffect } from "react";
 import useRequestResource from "./hooks/useRequestResource";
 import QuoteLIneChart from "./components/QuoteLIneChart";
 import useData from "./globalVariables/dataContext";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import DateStockePicker from "./components/DateStockePicker";
 import ModelPerformance from "./components/ModelPerformance";
+import { DotLoader } from "react-spinners";
 export default function Dashboard() {
-  const { priceHistory, parseData } = useData();
-  const { getResourceData } = useRequestResource();
-
-  // useEffect(() => {
-  //   getResourceData();
-  // }, []);
-
+  const { priceHistory, parseData, loading } = useData();
+  console.log(loading, "loadd");
   return (
     <Box
       sx={{
@@ -22,16 +18,34 @@ export default function Dashboard() {
         alignItems: "center",
         pt: 5,
       }}
-      className="quepedo"
     >
       <DateStockePicker />
-      {priceHistory.length !== 0 ? (
-        <QuoteLIneChart />
+      {priceHistory.length === 0 && loading === false ? (
+        <Typography>
+          Select a start/end date and stock to train your model
+        </Typography>
+      ) : loading === true ? (
+        <Box
+          sx={{
+            mt: 10,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <DotLoader color="#03FFF9" size={150} />
+          <Typography sx={{ color: "#03FFF9", mt: 3 }}>
+            Model in training
+          </Typography>
+        </Box>
       ) : (
-        "Stock symbol has not been selected"
+        <QuoteLIneChart />
       )}
 
-      {parseData.length !== 0 ? <ModelPerformance /> : null}
+      {loading === true ? null : parseData.length !== 0 ? (
+        <ModelPerformance />
+      ) : null}
     </Box>
   );
 }

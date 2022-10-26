@@ -13,7 +13,7 @@ import {
 import useMeasure from "react-use-measure";
 import useData from "../globalVariables/dataContext";
 import * as d3 from "d3";
-
+import useRequestResource from "../hooks/useRequestResource";
 import { motion } from "framer-motion";
 import {
   format,
@@ -46,17 +46,20 @@ export default function ModelPerformance() {
     priceClose,
     predictionClose,
     timePrediction,
-    priceHistory,
     parseData,
     rmse,
+
+    price,
   } = useData();
   // train data
   let trainData: parseData[] = [];
+  var predprice = price[0].toFixed(2);
 
   priceTrain.forEach((value, ind) => {
     let date = new Date(timeTrain[ind]);
     trainData.push({ date, value });
   });
+  let rmseValue = rmse[0]?.toFixed(2);
 
   // table data
   let tableData: performance[] = [];
@@ -135,8 +138,8 @@ export default function ModelPerformance() {
         height: "auto",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: "start",
+        alignItems: "start",
         pb: 5,
       }}
     >
@@ -158,14 +161,43 @@ export default function ModelPerformance() {
         <Box
           sx={{
             position: "absolute",
-            bgcolor: "rgba(255,255,255,0.9)",
-            left: 60,
-            top: 10,
+            bgcolor: "rgba(255,255,255,0.7)",
+            left: "1%",
+            bottom: 0,
             p: 0.5,
             borderRadius: "10px",
           }}
         >
-          RMSE: {rmse}
+          RMSE: {rmseValue}
+        </Box>
+        <Box
+          sx={{
+            position: "absolute",
+            bgcolor: "rgba(255,255,255,0.7)",
+            left: "54%",
+            top: -63,
+            p: 0.2,
+            borderRadius: "10px",
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <div
+              style={{ height: "3px", background: "#03FFF9", width: "20px" }}
+            />
+            <Typography sx={{ fontSize: 12 }}>Train</Typography>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <div
+              style={{ height: "3px", background: "#009CFF", width: "20px" }}
+            />
+            <Typography sx={{ fontSize: 12 }}>Price</Typography>
+          </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <div
+              style={{ height: "3px", background: "#FD00B2", width: "20px" }}
+            />
+            <Typography sx={{ fontSize: 12 }}>Prediction</Typography>
+          </Box>
         </Box>
         {trainData ? (
           <svg
@@ -251,17 +283,24 @@ export default function ModelPerformance() {
 
         {/* Table Data */}
         <TableContainer
-          component={Paper}
-          sx={{ width: "40%", height: "405px" }}
+          sx={{ width: "40%", height: "405px", borderRadius: "10px" }}
         >
           <Table sx={{ maxWidth: 500 }}>
-            <TableHead>
+            <TableHead sx={{ bgcolor: "rgba(203,156,255,0.1)" }}>
               <TableRow sx={{ width: 0 }}>
-                <TableCell sx={{ width: 0 }}>Date</TableCell>
-                <TableCell sx={{ width: 0 }} align="left">
+                <TableCell sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}>
+                  Date
+                </TableCell>
+                <TableCell
+                  sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}
+                  align="left"
+                >
                   Close Price
                 </TableCell>
-                <TableCell sx={{ width: "20px" }} align="left">
+                <TableCell
+                  sx={{ width: "20px", color: "rgba(255,255,255,0.7)" }}
+                  align="left"
+                >
                   Prediction
                 </TableCell>
               </TableRow>
@@ -270,15 +309,27 @@ export default function ModelPerformance() {
               {tableData.map((row) => (
                 <TableRow
                   key={row.date.toString()}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                  }}
                 >
-                  <TableCell sx={{ width: 0 }} component="th" scope="row">
+                  <TableCell
+                    sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}
+                    component="th"
+                    scope="row"
+                  >
                     {`${row.date.getFullYear()}-${row.date.getMonth()}-${row.date.getDay()}`}
                   </TableCell>
-                  <TableCell sx={{ width: 0 }} align="left">
+                  <TableCell
+                    sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}
+                    align="left"
+                  >
                     {row.price}
                   </TableCell>
-                  <TableCell sx={{ width: 0 }} align="left">
+                  <TableCell
+                    sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}
+                    align="left"
+                  >
                     {row.predict}
                   </TableCell>
                 </TableRow>

@@ -48,7 +48,7 @@ export default function QuoteLIneChart() {
     let date = new Date(timeSeries[ind]);
     parseData.push({ date, value });
   });
-  console.log(priceHistory, "history");
+
   useEffect(() => {
     getParseData(parseData);
   }, []);
@@ -201,7 +201,17 @@ export default function QuoteLIneChart() {
 
           {circules.map((d) => {
             return (
-              <Tooltip title={`Close Price: ${d.value.toFixed(2)}`}>
+              <Tooltip
+                title={`Close price: ${d.value.toFixed(2)}`}
+                componentsProps={{
+                  tooltip: {
+                    sx: {
+                      bgcolor: "black",
+                      fontSize: 15,
+                    },
+                  },
+                }}
+              >
                 <circle
                   className="circle"
                   key={d.date.toString()}

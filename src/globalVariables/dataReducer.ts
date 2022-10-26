@@ -10,7 +10,8 @@ export enum PriceActionKind{
     GET_PREDICTION_CLOSE = 'GET_PREDICTION_CLOSE',
     GET_TIME_PREDICTION = 'GET_TIME_PREDICTION',
     GET_PARSEDATA = 'GET_PARSEDATA',
-    GET_RMSE = 'GET_RMSE'
+    GET_RMSE = 'GET_RMSE',
+    GET_PRED_PRICE = 'GET_PRED_PRICE'
 }
 
 
@@ -45,8 +46,16 @@ interface State {
      getParseData:(value:{date:Date, value:number}[])=>void
 
      //RMSE
-     rmse:[number]
-     getRmse:(value:[number])=>void
+     rmse:number[]
+     getRmse:(value:number[])=>void
+
+     // loading
+     loading:boolean
+     Loading:()=>void
+
+     // pred price
+     price:number[]
+     getPredPrice:(value:number[])=>void
 }
 export const initialState:State = {
   // Prices History
@@ -74,12 +83,16 @@ export const initialState:State = {
   getParseData:()=>{},
 
   // RMSE
-  rmse:[0],
+  rmse:[],
   getRmse:()=>{},
 
+  //loading
+  loading:false,
+  Loading:()=>{},
 
-
-
+  //Pred price
+  price:[],
+  getPredPrice:()=>{}
 }
 
 export const dataReducer:Reducer<State,priceActions> = (state, action) => {
@@ -138,6 +151,14 @@ export const dataReducer:Reducer<State,priceActions> = (state, action) => {
           ...state,
           rmse: payload,
         };
+
+      case PriceActionKind.LOADING:
+        return {...state, loading:!state.loading}
+
+      case PriceActionKind.GET_PRED_PRICE:
+        return {...state, price: payload}
+
+
 
        default:
         return state
