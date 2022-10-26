@@ -13,7 +13,6 @@ import {
 import useMeasure from "react-use-measure";
 import useData from "../globalVariables/dataContext";
 import * as d3 from "d3";
-import useRequestResource from "../hooks/useRequestResource";
 import { motion } from "framer-motion";
 import {
   format,
@@ -22,6 +21,7 @@ import {
   endOfYear,
   eachYearOfInterval,
 } from "date-fns";
+import Prediction from "./Prediction";
 
 interface parseData {
   date: Date;
@@ -53,7 +53,6 @@ export default function ModelPerformance() {
   } = useData();
   // train data
   let trainData: parseData[] = [];
-  var predprice = price[0].toFixed(2);
 
   priceTrain.forEach((value, ind) => {
     let date = new Date(timeTrain[ind]);
@@ -150,6 +149,7 @@ export default function ModelPerformance() {
           pb: 4,
           fontFamily: "Roboto Flex",
           color: "rgba(255,255,255,0.8)",
+          fontSize: { lg: 45, md: 45, sm: 35, xs: 25 },
         }}
       >
         {" "}
@@ -174,7 +174,7 @@ export default function ModelPerformance() {
           sx={{
             position: "absolute",
             bgcolor: "rgba(255,255,255,0.7)",
-            left: "54%",
+            left: { lg: "43%", md: "45%", sm: "75%", xs: "75%" },
             top: -63,
             p: 0.2,
             borderRadius: "10px",
@@ -199,145 +199,157 @@ export default function ModelPerformance() {
             <Typography sx={{ fontSize: 12 }}>Prediction</Typography>
           </Box>
         </Box>
-        {trainData ? (
-          <svg
-            ref={ref}
-            style={{
-              backgroundColor: "#1A172C",
-              padding: 5,
-              width: "65%",
-              height: "400px",
-              borderRadius: "10px",
-            }}
-            viewBox={`0 0 ${bounds.width} ${bounds.height}`}
-          >
-            {yScale.ticks().map((max) => {
-              return (
-                // yScale
-                // transform={`translate(0,${yScale(max)})` if I want less numbers on y scale
-                <g>
-                  {/* line */}
-                  <line
-                    x1={margin.left}
-                    x2={width - margin.right}
-                    y1={yScale(max)}
-                    y2={yScale(max)}
-                    stroke="rgba(255,255,255,0.2)"
-                    strokeDasharray="1"
-                  />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { lg: "row", md: "row", sm: "column", xs: "column" },
+            gap: 1,
+            width: "100%",
+          }}
+          className="hola"
+        >
+          {trainData ? (
+            <svg
+              ref={ref}
+              style={{
+                backgroundColor: "#1A172C",
+                padding: 5,
+                width: "100%",
+                height: "400px",
+                borderRadius: "10px",
+              }}
+              viewBox={`0 0 ${bounds.width} ${bounds.height}`}
+            >
+              {yScale.ticks().map((max) => {
+                return (
+                  // yScale
+                  // transform={`translate(0,${yScale(max)})` if I want less numbers on y scale
+                  <g>
+                    {/* line */}
+                    <line
+                      x1={margin.left}
+                      x2={width - margin.right}
+                      y1={yScale(max)}
+                      y2={yScale(max)}
+                      stroke="rgba(255,255,255,0.2)"
+                      strokeDasharray="1"
+                    />
+                    <text
+                      fill="rgba(255,255,255,0.3)"
+                      alignmentBaseline="middle"
+                      y={yScale(max)}
+                    >
+                      {max}
+                    </text>
+                  </g>
+                );
+              })}
+
+              {/* XScale */}
+              {months.map((date, i) => (
+                <g key={i} transform={`translate(${xScale(date)},0)`}>
                   <text
+                    className="yticks"
+                    x={(xScale(endOfYear(date)) - xScale(date)) / 2 - 60}
+                    y={height - 5}
+                    textAnchor="middle"
                     fill="rgba(255,255,255,0.3)"
-                    alignmentBaseline="middle"
-                    y={yScale(max)}
                   >
-                    {max}
+                    {format(date, "MMM y")}
                   </text>
                 </g>
-              );
-            })}
+              ))}
 
-            {/* XScale */}
-            {months.map((date, i) => (
-              <g key={i} transform={`translate(${xScale(date)},0)`}>
-                <text
-                  className="yticks"
-                  x={(xScale(endOfYear(date)) - xScale(date)) / 2 - 60}
-                  y={height - 5}
-                  textAnchor="middle"
-                  fill="rgba(255,255,255,0.3)"
-                >
-                  {format(date, "MMM y")}
-                </text>
-              </g>
-            ))}
+              <motion.path
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 5, type: "spring" }}
+                d={d!}
+                fill="none"
+                stroke="#03FFF9"
+                className="shadow"
+              />
 
-            <motion.path
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 5, type: "spring" }}
-              d={d!}
-              fill="none"
-              stroke="#03FFF9"
-              className="shadow"
-            />
+              <motion.path
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 5, type: "spring" }}
+                d={v!}
+                fill="none"
+                stroke="#009CFF"
+              />
 
-            <motion.path
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 5, type: "spring" }}
-              d={v!}
-              fill="none"
-              stroke="#009CFF"
-            />
+              <motion.path
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 5, type: "spring" }}
+                d={p!}
+                fill="none"
+                stroke="#FD00B2"
+              />
+            </svg>
+          ) : null}
 
-            <motion.path
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 5, type: "spring" }}
-              d={p!}
-              fill="none"
-              stroke="#FD00B2"
-            />
-          </svg>
-        ) : null}
-
-        {/* Table Data */}
-        <TableContainer
-          sx={{ width: "40%", height: "405px", borderRadius: "10px" }}
-        >
-          <Table sx={{ maxWidth: 500 }}>
-            <TableHead sx={{ bgcolor: "rgba(203,156,255,0.1)" }}>
-              <TableRow sx={{ width: 0 }}>
-                <TableCell sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}>
-                  Date
-                </TableCell>
-                <TableCell
-                  sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}
-                  align="left"
-                >
-                  Close Price
-                </TableCell>
-                <TableCell
-                  sx={{ width: "20px", color: "rgba(255,255,255,0.7)" }}
-                  align="left"
-                >
-                  Prediction
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {tableData.map((row) => (
-                <TableRow
-                  key={row.date.toString()}
-                  sx={{
-                    "&:last-child td, &:last-child th": { border: 0 },
-                  }}
-                >
-                  <TableCell
-                    sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}
-                    component="th"
-                    scope="row"
-                  >
-                    {`${row.date.getFullYear()}-${row.date.getMonth()}-${row.date.getDay()}`}
+          <TableContainer
+            sx={{ width: { lg: "30%" }, height: "405px", borderRadius: "10px" }}
+          >
+            <Table sx={{ maxWidth: 600 }}>
+              <TableHead sx={{ bgcolor: "rgba(203,156,255,0.1)" }}>
+                <TableRow sx={{ width: 0 }}>
+                  <TableCell sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}>
+                    Date
                   </TableCell>
                   <TableCell
                     sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}
                     align="left"
                   >
-                    {row.price}
+                    Close Price
                   </TableCell>
                   <TableCell
-                    sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}
+                    sx={{ width: "20px", color: "rgba(255,255,255,0.7)" }}
                     align="left"
                   >
-                    {row.predict}
+                    Prediction
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {tableData.map((row) => (
+                  <TableRow
+                    key={row.date.toString()}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                  >
+                    <TableCell
+                      sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}
+                      component="th"
+                      scope="row"
+                    >
+                      {`${row.date.getFullYear()}-${row.date.getMonth()}-${row.date.getDay()}`}
+                    </TableCell>
+                    <TableCell
+                      sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}
+                      align="left"
+                    >
+                      {row.price}
+                    </TableCell>
+                    <TableCell
+                      sx={{ width: 0, color: "rgba(255,255,255,0.7)" }}
+                      align="left"
+                    >
+                      {row.predict}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+
+        {/* Table Data */}
       </Box>
+      <Prediction />
     </Box>
   );
 }

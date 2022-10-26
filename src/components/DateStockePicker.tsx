@@ -14,9 +14,13 @@ import {
   FormControl,
   Select,
   SelectChangeEvent,
+  Snackbar,
+  Button,
 } from "@mui/material";
 
 export default function DateStockePicker() {
+  // open Snack
+  const [open, setOpen] = useState(false);
   //Global varialbes
   const { getResourceData } = useRequestResource();
   //Date picker ///////////////
@@ -39,30 +43,63 @@ export default function DateStockePicker() {
     setStock(event.target.value as string);
   };
 
+  // handle  snackbar
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <Button sx={{ color: "#03FFF9" }} size="small" onClick={handleClose}>
+        Close
+      </Button>
+    </React.Fragment>
+  );
+  //////////////
+
+  let totalDays =
+    (new Date(endDate).getTime() - new Date(startDate).getTime()) /
+    (1000 * 3600 * 24);
+
   useEffect(() => {
-    if (stock !== "") {
+    if (stock !== "" && totalDays > 365) {
       getResourceData({
         query: `?start=${startDate}&end=${endDate}&stock=${stock}`,
       });
+    } else {
+      setOpen(true);
     }
   }, [stock]);
 
   // Menu items
-  const stockMenu = ["NFLX", "NVDA", "DIS", "FB", "AAPL", "BYND", "MSFT"];
+  const stockMenu = ["NFLX", "NVDA", "DIS", "AAPL", "MSFT"];
   /////////////////////////
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        message="Date range not allowed"
+        action={action}
+      />
       <Typography
         variant="h3"
         sx={{
           pb: 5,
           fontFamily: "Roboto Flex",
           color: "rgba(255,255,255,0.8)",
+          fontSize: { lg: 45, md: 45, sm: 35, xs: 25 },
         }}
       >
         Close Price History
       </Typography>
-      <Stack spacing={3} direction="row" sx={{ pb: 2 }}>
+      <Stack
+        spacing={{ lg: 3, md: 3, sm: 0, xs: 0 }}
+        direction="row"
+        sx={{ pb: 2 }}
+      >
         <DesktopDatePicker
           label="Start Date"
           inputFormat="MM/DD/YYYY"

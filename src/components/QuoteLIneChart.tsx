@@ -120,7 +120,7 @@ export default function QuoteLIneChart() {
   return (
     <Box
       sx={{
-        width: "85%",
+        width: { lg: "85%", md: "85%", sm: "95%", xs: "95%" },
         height: "400px",
         display: "flex",
         justifyContent: "flex-start",

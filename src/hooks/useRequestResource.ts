@@ -16,7 +16,7 @@ export default function useRequestResource(){
     const getResourceData = useCallback(
      ({query}:{query:string})=>{
         Loading()
-        console.log('something is wrong')
+
         client.get(`${query}`)
         .then((res)=>{
 

@@ -8,7 +8,7 @@ import ModelPerformance from "./components/ModelPerformance";
 import { DotLoader } from "react-spinners";
 export default function Dashboard() {
   const { priceHistory, parseData, loading } = useData();
-  console.log(loading, "loadd");
+
   return (
     <Box
       sx={{
@@ -21,8 +21,11 @@ export default function Dashboard() {
     >
       <DateStockePicker />
       {priceHistory.length === 0 && loading === false ? (
-        <Typography>
-          Select a start/end date and stock to train your model
+        <Typography
+          variant="h5"
+          sx={{ mt: 10, color: "rgba(255,255,255,0.3)" }}
+        >
+          Select a start/end date and stock to train your model.
         </Typography>
       ) : loading === true ? (
         <Box
