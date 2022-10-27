@@ -23,7 +23,11 @@ export default function Dashboard() {
       {priceHistory.length === 0 && loading === false ? (
         <Typography
           variant="h5"
-          sx={{ mt: 10, color: "rgba(255,255,255,0.3)" }}
+          sx={{
+            mt: 10,
+            color: "rgba(255,255,255,0.3)",
+            fontSize: { lg: 40, md: 35, sm: 20, xs: 15 },
+          }}
         >
           Select a start/end date and stock to train your model.
         </Typography>

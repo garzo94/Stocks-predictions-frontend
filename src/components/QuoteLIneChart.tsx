@@ -143,8 +143,6 @@ export default function QuoteLIneChart() {
         >
           {yScale.ticks().map((max) => {
             return (
-              // yScale
-              // transform={`translate(0,${yScale(max)})` if I want less numbers on y scale
               <g>
                 {/* line */}
                 <line
@@ -168,7 +166,7 @@ export default function QuoteLIneChart() {
 
           {/* XScale */}
           {months.map((date, i) => (
-            <g transform={`translate(${xScale(date)},0)`}>
+            <g key={i} transform={`translate(${xScale(date)},0)`}>
               {i % 2 === 1 && (
                 <rect
                   width={xScale(endOfYear(date)) - xScale(date)}
@@ -202,6 +200,7 @@ export default function QuoteLIneChart() {
           {circules.map((d) => {
             return (
               <Tooltip
+                key={d.value}
                 title={`Close price: ${d.value.toFixed(2)}`}
                 componentsProps={{
                   tooltip: {

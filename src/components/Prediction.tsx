@@ -3,7 +3,8 @@ import useData from "../globalVariables/dataContext";
 import { Typography, Box } from "@mui/material";
 export default function Prediction() {
   const { price } = useData();
-  var predprice = price[0].toFixed(2);
+
+  var predprice = Number(price[0]).toFixed(2);
   return (
     <Box>
       <Typography
@@ -21,7 +22,7 @@ export default function Prediction() {
       <Box
         sx={{
           bgcolor: "rgba(3,255,249,0.8)",
-          width: { lg: "200px", md: "200px", sm: "150px", xs: "100px" },
+          width: { lg: "200px", md: "200px", sm: "150px" },
           borderRadius: "10px",
           p: 2,
           textAlign: "center",

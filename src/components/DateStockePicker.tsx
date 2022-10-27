@@ -62,14 +62,18 @@ export default function DateStockePicker() {
     (new Date(endDate).getTime() - new Date(startDate).getTime()) /
     (1000 * 3600 * 24);
 
-  useEffect(() => {
+  function getQuery() {
     if (stock !== "" && totalDays > 365) {
       getResourceData({
         query: `?start=${startDate}&end=${endDate}&stock=${stock}`,
       });
     } else {
-      setOpen(true);
+      stock !== "" ? setOpen(true) : null;
     }
+  }
+
+  useEffect(() => {
+    getQuery();
   }, [stock]);
 
   // Menu items
@@ -81,7 +85,7 @@ export default function DateStockePicker() {
         open={open}
         autoHideDuration={6000}
         onClose={handleClose}
-        message="Date range not allowed"
+        message="Date range not allowed, enter a range more than 1 year"
         action={action}
       />
       <Typography
@@ -131,7 +135,11 @@ export default function DateStockePicker() {
             >
               {stockMenu.map((stock) => {
                 return (
-                  <MenuItem key={stock} value={stock}>
+                  <MenuItem
+                    key={stock}
+                    value={stock}
+                    onClick={() => getQuery()}
+                  >
                     {stock}
                   </MenuItem>
                 );

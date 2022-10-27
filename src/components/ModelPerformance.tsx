@@ -174,7 +174,7 @@ export default function ModelPerformance() {
           sx={{
             position: "absolute",
             bgcolor: "rgba(255,255,255,0.7)",
-            left: { lg: "43%", md: "45%", sm: "75%", xs: "75%" },
+            left: { lg: "68%", md: "45%", sm: "75%", xs: "75%" },
             top: -63,
             p: 0.2,
             borderRadius: "10px",
@@ -206,7 +206,6 @@ export default function ModelPerformance() {
             gap: 1,
             width: "100%",
           }}
-          className="hola"
         >
           {trainData ? (
             <svg
@@ -224,7 +223,7 @@ export default function ModelPerformance() {
                 return (
                   // yScale
                   // transform={`translate(0,${yScale(max)})` if I want less numbers on y scale
-                  <g>
+                  <g key={max}>
                     {/* line */}
                     <line
                       x1={margin.left}
