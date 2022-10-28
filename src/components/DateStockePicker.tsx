@@ -63,7 +63,7 @@ export default function DateStockePicker() {
     (1000 * 3600 * 24);
 
   function getQuery() {
-    if (stock !== "" && totalDays > 365) {
+    if (totalDays > 365) {
       getResourceData({
         query: `?start=${startDate}&end=${endDate}&stock=${stock}`,
       });
@@ -71,10 +71,6 @@ export default function DateStockePicker() {
       stock !== "" ? setOpen(true) : null;
     }
   }
-
-  useEffect(() => {
-    getQuery();
-  }, [stock]);
 
   // Menu items
   const stockMenu = ["NFLX", "NVDA", "DIS", "AAPL", "MSFT"];

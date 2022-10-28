@@ -3,7 +3,7 @@ import axios from "axios";
 import useData from "../globalVariables/dataContext";
 
 const client = axios.create({
-    baseURL:"https://stock-predictions-backend-production.up.railway.app/api/"
+    baseURL:"http://127.0.0.1:8000/api/"
 })
 
 export default function useRequestResource(){
