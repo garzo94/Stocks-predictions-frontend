@@ -6,16 +6,16 @@ body{
      font-family: 'Roboto Flex', sans-serif;
     }
 
- .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline{
+    .css-1bn53lx:hover .MuiOutlinedInput-notchedOutline, .css-1bn53lx.Mui-error .MuiOutlinedInput-notchedOutline, .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline{
    border-color: rgba(255,255,255,0.7) !important
 }
 
-.css-slyssw,.css-16p9rl4-MuiFormLabel-root-MuiInputLabel-root.Mui-focused, .css-1sumxir-MuiFormLabel-root-MuiInputLabel-root, .css-1d3z3hw-MuiOutlinedInput-notchedOutline, .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root, .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root.Mui-error, .css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-error{
+.css-u9osun, .css-p0rm37.Mui-error, .css-p0rm37.Mui-error, .css-slyssw,.css-16p9rl4-MuiFormLabel-root-MuiInputLabel-root.Mui-focused, .css-1sumxir-MuiFormLabel-root-MuiInputLabel-root, .css-1d3z3hw-MuiOutlinedInput-notchedOutline, .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root, .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root.Mui-error, .css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-error{
     color:  rgba(255,255,255,0.7) !important
 
 }
 
-.css-slyssw, .css-bpeome-MuiSvgIcon-root-MuiSelect-icon, .css-i4bv87-MuiSvgIcon-root, .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon{fill:rgba(255,255,255,0.7) !important ;}
+.css-1bn53lx:hover .MuiOutlinedInput-notchedOutline, .css-slyssw, .css-bpeome-MuiSvgIcon-root-MuiSelect-icon, .css-i4bv87-MuiSvgIcon-root, .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon{fill:rgba(255,255,255,0.7) !important ;}
 .css-1d3z3hw-MuiOutlinedInput-notchedOutline{
     border: 1px solid rgba(255,255,255,0.7) !important
 }
