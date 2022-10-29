@@ -49,6 +49,9 @@ export default function DateStockePicker() {
     setOpen(false);
   };
 
+  // set click request
+  const [request, setRequest] = useState(false);
+
   const action = (
     <React.Fragment>
       <Button sx={{ color: "#03FFF9" }} size="small" onClick={handleClose}>
@@ -62,15 +65,15 @@ export default function DateStockePicker() {
     (new Date(endDate).getTime() - new Date(startDate).getTime()) /
     (1000 * 3600 * 24);
 
-  function getQuery() {
-    if (totalDays > 365) {
+  useEffect(() => {
+    if (totalDays > 365 && stock !== "") {
       getResourceData({
         query: `?start=${startDate}&end=${endDate}&stock=${stock}`,
       });
     } else {
       stock !== "" ? setOpen(true) : null;
     }
-  }
+  }, [stock, request]);
 
   // Menu items
   const stockMenu = ["NFLX", "NVDA", "DIS", "AAPL", "MSFT"];
@@ -134,7 +137,7 @@ export default function DateStockePicker() {
                   <MenuItem
                     key={stock}
                     value={stock}
-                    onClick={() => getQuery()}
+                    onClick={() => setRequest(!request)}
                   >
                     {stock}
                   </MenuItem>
